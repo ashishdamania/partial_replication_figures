@@ -4,6 +4,6 @@ O’Flanagan, C. H., Campbell, K. R., Zhang, A. W., Kabeer, F., Lim, J. L. P., B
 
 Original repo for the figures is located at : https://github.com/kieranrcampbell/scrnaseq-digestion-paper
 
-To run reproduce the figure included in this repository. Clone the repo and open the RStudio project file partial_replication_scrnaseq_digestion_paper.Rproj in Rstudio IDE.
+To reproduce the figures, clone the repo and open the RStudio project file partial_replication_scrnaseq_digestion_paper.Rproj with Rstudio IDE.
 
 
