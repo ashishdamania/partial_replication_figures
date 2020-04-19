@@ -1,0 +1,9 @@
+This is the repository to replicate some of the figures from this following paper: 
+
+O’Flanagan, C. H., Campbell, K. R., Zhang, A. W., Kabeer, F., Lim, J. L. P., Biele, J., Eirew, P., Lai, D., McPherson, A., Kong, E., Bates, C., Borkowski, K., Wiens, M., Hewitson, B., Hopkins, J., Pham, J., Ceglia, N., Moore, R., Mungall, A. J., … Aparicio, S. (2019). Dissociation of solid tumor tissues with cold active protease for single-cell RNA-seq minimizes conserved collagenase-associated stress responses. Genome Biology, 20(1), 210. https://doi.org/10.1186/s13059-019-1830-0
+
+Original repo for the figures is located at : https://github.com/kieranrcampbell/scrnaseq-digestion-paper
+
+To run reproduce the figure included in this repository. Clone the repo and open the RStudio project file partial_replication_scrnaseq_digestion_paper.Rproj in Rstudio IDE.
+
+

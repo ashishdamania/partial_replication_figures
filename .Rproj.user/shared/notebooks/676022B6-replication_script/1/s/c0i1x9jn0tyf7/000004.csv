@@ -1,0 +1,8 @@
+"0","load(""../data/deliverables/human_H_v5p2.rdata"")"
+"0","go_gs <- Hs.H"
+"0","entrezgene_ensembl_map <- as.list(org.Hs.egENSEMBL)"
+"0","map_ids <- function(entrezgenes) {"
+"0","  x <- unlist(entrezgene_ensembl_map[entrezgenes])"
+"0","  names(x) <- NULL"
+"0","  x"
+"0","}"

@@ -1,0 +1,2 @@
+"0","pathmem <- lapply(names(go_gs_ensembl), function(n) tibble(pathway = n, ensembl_gene_id = go_gs_ensembl[[n]])) %>% "
+"0","  bind_rows()"

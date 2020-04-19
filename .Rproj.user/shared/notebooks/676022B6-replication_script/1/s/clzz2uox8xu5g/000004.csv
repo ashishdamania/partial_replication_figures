@@ -1,0 +1,15 @@
+"0","coregene_df <- read_csv(""../data/deliverables/coregene_df-FALSE-v3.csv"")"
+"2","Parsed with column specification:
+cols(
+  ensembl_gene_id = [31mcol_character()[39m,
+  logFC = [32mcol_double()[39m,
+  logCPM = [32mcol_double()[39m,
+  F = [32mcol_double()[39m,
+  PValue = [32mcol_double()[39m,
+  FDR = [32mcol_double()[39m,
+  gene_symbol = [31mcol_character()[39m,
+  cellranger_version = [31mcol_character()[39m,
+  pseudobulk = [33mcol_logical()[39m
+)
+"
+"0","coregenes <- coregene_df$ensembl_gene_id"

@@ -1,0 +1,2 @@
+"0","go_gs_ensembl <- lapply(go_gs, map_ids)"
+"0","names(go_gs_ensembl) <- sub(""HALLMARK_"", """", names(go_gs_ensembl))"

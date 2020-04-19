@@ -1,0 +1,10 @@
+"0","top_n(coregene_df, 40, (logFC)) %>% "
+"0","  inner_join(pathmem) %>% "
+"0","  ggplot(aes(y = fct_reorder(gene_symbol, n_pathways_of_gene), "
+"0","                    x = fct_reorder(pathway, -n_genes_in_pathway))) +"
+"0","  geom_tile() +"
+"0","  labs(y = ""Gene"", x = ""Pathway"") +"
+"0","  theme_paper() +"
+"0","  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))"
+"2","Joining, by = c(""ensembl_gene_id"", ""logFC"", ""logCPM"", ""F"", ""PValue"", ""FDR"", ""gene_symbol"", ""cellranger_version"", ""pseudobulk"")
+"

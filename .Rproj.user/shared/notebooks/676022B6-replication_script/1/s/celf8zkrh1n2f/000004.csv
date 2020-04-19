@@ -1,0 +1,41 @@
+"0","lowmito_de <- read_csv(""../data/deliverables/ldd-lowmito-de-v3.csv"")"
+"2","Parsed with column specification:
+cols(
+  ensembl_gene_id = [31mcol_character()[39m,
+  logFC = [32mcol_double()[39m,
+  logCPM = [32mcol_double()[39m,
+  F = [32mcol_double()[39m,
+  PValue = [32mcol_double()[39m,
+  FDR = [32mcol_double()[39m
+)
+"
+"0","cluster_de <- read_csv(""../data/deliverables/ldd-cluster-de-v3.csv"")"
+"2","Parsed with column specification:
+cols(
+  ensembl_gene_id = [31mcol_character()[39m,
+  logFC = [32mcol_double()[39m,
+  logCPM = [32mcol_double()[39m,
+  F = [32mcol_double()[39m,
+  PValue = [32mcol_double()[39m,
+  FDR = [32mcol_double()[39m,
+  cluster_comparison = [31mcol_character()[39m
+)
+"
+"0","dfs <- read_csv(""../data/deliverables/human_mouse_proportions.csv"")"
+"2","Parsed with column specification:
+cols(
+  sample_id = [31mcol_character()[39m,
+  sample_type = [31mcol_character()[39m,
+  Barcode = [31mcol_character()[39m,
+  total_counts_human = [32mcol_double()[39m,
+  human_mouse_human = [31mcol_character()[39m,
+  total_counts_mouse = [32mcol_double()[39m,
+  human_mouse_mouse = [31mcol_character()[39m,
+  human_mouse_ratio = [32mcol_double()[39m,
+  sum = [32mcol_double()[39m,
+  diff = [32mcol_double()[39m,
+  diff_to_sum = [32mcol_double()[39m,
+  is_mouse = [33mcol_logical()[39m,
+  sample_id_fixed = [31mcol_character()[39m
+)
+"

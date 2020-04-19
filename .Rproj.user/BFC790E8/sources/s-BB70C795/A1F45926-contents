@@ -1,0 +1,192 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Load library
+
+Install libraries on the local computer if not already installed using CRAN repository using Rstudio or within R
+"org.Hs.eg.db" Package requires the ues of Bioconductor repository. Please uncomment the first line in this code chunk to install it. 
+```{r}
+#BiocManager::install("org.Hs.eg.db")
+library(tidyverse)
+library(ggrepel)
+library(cowplot)
+library(org.Hs.eg.db)
+```
+
+
+
+## Function to create ggplot theme for the publication figures
+```{r}
+theme_paper <- function() {
+  cowplot::theme_cowplot(font_size = 11) +
+  theme(axis.text = element_text(size = 10, colour = "black"),
+        strip.text = element_text(face = "bold", size = 11),
+        strip.background = element_rect(fill = "white", colour = "white"),
+        axis.title = element_text(size = 11, colour = "black"),
+        legend.title = element_text(size = 11, colour = "black", face = "bold"),
+        legend.text = element_text(size = 10, colour = "black")
+  )
+}
+```
+
+
+
+# Data for differential analysis
+
+**lowermite_de is the differential analysis result data for living vs Dead (Dead as the reference) within the cluster 1 which is filtered further which keeps mitochondrial content up to 10%**
+
+**cluster_de is the differential analysis result data for comparison**
+
+**dfs is the data for the percentage of cells identified as mouse across all scRNA-seq samples (3 groups)** 
+
+```{r}
+lowmito_de <- read_csv("../data/deliverables/ldd-lowmito-de-v3.csv")
+cluster_de <- read_csv("../data/deliverables/ldd-cluster-de-v3.csv")
+dfs <- read_csv("../data/deliverables/human_mouse_proportions.csv")
+```
+
+
+#Figure 1 (Figure 2i in the paper)
+```{r fig.height=2, fig.width=3}
+df_lm <- lowmito_de %>% 
+  as_tibble()
+
+df_lm$symbol <- sapply(strsplit(df_lm$ensembl_gene_id, "_"), `[`, 1)
+
+
+
+genes_to_plot <- with(df_lm, abs(logFC) > 1.2)
+df_ann <- filter(df_lm, genes_to_plot)
+ggplot(df_lm, aes(x = logFC, y = -log10(FDR))) +
+  geom_point(aes(colour = logFC), alpha = 0.4, size = 1) +
+  geom_label_repel(data = df_ann, aes(label = symbol), size = 3) +
+  scale_colour_gradient2(breaks = c(-1, 0, 1, 2),
+                         limits = c(-.7, .7), 
+                         oob = scales::squish) +
+  theme_paper() +
+  theme(legend.position = "none") +
+  labs(x = "log FC, live vs. dead", y = expression(-log[10]~"(FDR)"),
+       subtitle = "Cluster 1 cells < 10% mitochondrial transcripts only") +
+  theme(plot.subtitle = element_text(size = 11))
+
+ggsave("../figures/Fig2i_Main_graph_volcano.pdf", width = 6, height = 5)
+```
+
+
+
+
+
+#Figure 2 (Figure 2j in the paper)
+```{r}
+df_21 <- cluster_de %>%
+  as_tibble() %>%
+  filter(cluster_comparison=="3vs2")
+
+df_21$symbol <- sapply(strsplit(df_21$ensembl_gene_id, "_"), `[`, 1)
+
+
+quantiles <- seq(0.01,99.99,0.1) * 0.01
+quantiles_lowmito <- quantile(abs(df_lm$logFC), quantiles) 
+quantiles_cluster <- quantile(abs(df_21$logFC), quantiles) 
+
+tibble(lowmito = quantiles_lowmito, cluster = quantiles_cluster) %>% 
+  ggplot(aes(x = lowmito, y = cluster)) +
+  geom_point(alpha = 0.3) +
+  geom_abline(slope = 1, intercept = 0, colour = 'darkred', linetype = 2) +
+  labs(x = "logFC quantiles within cluster 1", y = "logFC quantile\nbetween clusters 1 & 2")+
+    theme_bw() +
+  theme_paper() 
+
+ggsave("../figures/Fig2j_quantile_plot.pdf",width = 5, height = 8)
+```
+
+
+
+#Figure 3 (Supplementary Figure S2 in paper)
+```{r, fig.width=3,fig.height=4 }
+dfs_grouped <- group_by(dfs, sample_id_fixed, sample_type) %>% 
+  dplyr::summarise(pct_mouse = 100 * mean(diff_to_sum < 0, na.rm=TRUE)) %>% 
+  ungroup()
+dfs_grouped %>% 
+  ggplot(aes(x = forcats::fct_reorder(sample_id_fixed, pct_mouse), y = pct_mouse)) +
+  geom_bar(stat = 'identity') +
+  coord_flip() +
+  labs(y = "% of cells mouse", x = "Sample") +
+  theme_bw() +
+  theme_paper() +
+  theme(panel.grid.major = element_line(colour = "grey80")) +
+  facet_grid( sample_type ~ ., scales = "free_y", space = "free_y")
+ggsave( "../figures/fig_s2_pct_cells_mouse.pdf", width = 5, height = 8)
+```
+
+
+
+#Figure 4 (Supplementary Figure S5 in paper)
+
+
+## Pathway membership in the Patient derived breast cancer xenografts (PDX) sample. 
+```{r}
+coregene_df <- read_csv("../data/deliverables/coregene_df-FALSE-v3.csv")
+coregenes <- coregene_df$ensembl_gene_id
+```
+
+```{r}
+load("../data/deliverables/human_H_v5p2.rdata")
+go_gs <- Hs.H
+entrezgene_ensembl_map <- as.list(org.Hs.egENSEMBL)
+map_ids <- function(entrezgenes) {
+  x <- unlist(entrezgene_ensembl_map[entrezgenes])
+  names(x) <- NULL
+  x
+}
+```
+
+```{r}
+go_gs_ensembl <- lapply(go_gs, map_ids)
+names(go_gs_ensembl) <- sub("HALLMARK_", "", names(go_gs_ensembl))
+```
+
+```{r}
+pathmem <- lapply(names(go_gs_ensembl), function(n) tibble(pathway = n, ensembl_gene_id = go_gs_ensembl[[n]])) %>% 
+  bind_rows()
+```
+
+```{r}
+pathmem <- inner_join(pathmem, coregene_df)
+pathmem <- dplyr::count(pathmem, pathway, name='n_genes_in_pathway') %>% 
+  inner_join(pathmem)
+pathmem <- dplyr::count(pathmem, ensembl_gene_id, name='n_pathways_of_gene') %>% 
+  inner_join(pathmem)
+```
+
+```{r, fig.width=3,fig.height=4}
+top_n(coregene_df, 40, (logFC)) %>% 
+  inner_join(pathmem) %>% 
+  ggplot(aes(y = fct_reorder(gene_symbol, n_pathways_of_gene), 
+                    x = fct_reorder(pathway, -n_genes_in_pathway))) +
+  geom_tile() +
+  labs(y = "Gene", x = "Pathway") +
+  theme_paper() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+ggsave("../figures/fig_s5_pathway_membership_plot.pdf", width = 6, height = 9)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

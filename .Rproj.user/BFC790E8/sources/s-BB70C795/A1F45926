@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1587326110314.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3329588179",
+    "id" : "A1F45926",
+    "lastKnownWriteTime" : 1587327015,
+    "last_content_update" : 1587327015146,
+    "path" : "~/OneDrive - ashishdamania/UT_health/Genomics_statistical/partial_replication_scrnaseq_digestion_paper/scripts/replication_script.Rmd",
+    "project_path" : "scripts/replication_script.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "132,3",
+        "scrollLine" : "122",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
