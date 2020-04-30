@@ -49,7 +49,7 @@ dfs <- read_csv("../data/deliverables/human_mouse_proportions.csv")
 
 
 #Figure 1 (Figure 2i in the paper)
-```{r fig.height=2, fig.width=3}
+```{r fig.height=6, fig.width=6}
 df_lm <- lowmito_de %>% 
   as_tibble()
 
@@ -71,7 +71,7 @@ ggplot(df_lm, aes(x = logFC, y = -log10(FDR))) +
        subtitle = "Cluster 1 cells < 10% mitochondrial transcripts only") +
   theme(plot.subtitle = element_text(size = 11))
 
-ggsave("../figures/Fig2i_Main_graph_volcano.pdf", width = 6, height = 5)
+ggsave("../figures/Fig2i_Main_graph_volcano.pdf", width = 6, height = 6)
 ```
 
 
@@ -79,7 +79,7 @@ ggsave("../figures/Fig2i_Main_graph_volcano.pdf", width = 6, height = 5)
 
 
 #Figure 2 (Figure 2j in the paper)
-```{r}
+```{r, fig.height=6, fig.width=6}
 df_21 <- cluster_de %>%
   as_tibble() %>%
   filter(cluster_comparison=="3vs2")
@@ -96,10 +96,11 @@ tibble(lowmito = quantiles_lowmito, cluster = quantiles_cluster) %>%
   geom_point(alpha = 0.3) +
   geom_abline(slope = 1, intercept = 0, colour = 'darkred', linetype = 2) +
   labs(x = "logFC quantiles within cluster 1", y = "logFC quantile\nbetween clusters 1 & 2")+
+  ylim(0, 3)+
     theme_bw() +
   theme_paper() 
 
-ggsave("../figures/Fig2j_quantile_plot.pdf",width = 5, height = 8)
+ggsave("../figures/Fig2j_quantile_plot.pdf",width = 6, height = 6)
 ```
 
 
